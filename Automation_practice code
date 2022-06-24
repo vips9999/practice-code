@@ -1,0 +1,1019 @@
+6/05/2022
+import org.junit.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+import java.util.List;
+
+public class SampleTestOne {
+
+    WebDriver driver = null;
+    WebElement userNameInputBox = null;
+
+    @Before
+    public void setup() {
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://www.facebook.com/");
+        userNameInputBox = driver.findElement(By.id("email"));
+    }
+
+
+
+    @Test
+    public void sampleOne() {
+        userNameInputBox.clear();
+        userNameInputBox.sendKeys("Hello By Name");
+    }
+
+    @Test
+    public void sampleTwo() {
+        userNameInputBox.clear();
+        userNameInputBox.sendKeys("Hello By ID");
+    }
+
+    @Test()
+    public void sampleThree() {
+
+	userNameInputBox.clear();
+        userNameInputBox.sendKeys("Hello By Css selector");
+
+        List<WebElement> allEr = driver.findElements(By.partialLinkText("er"));
+        System.out.println("Total link text containing er " + allEr.size());
+
+        driver.findElement(By.className("_6ltj")).click(); // Click forgot password
+        driver.findElement(By.className("tj")).click(); // Click forgot password
+        WebElement forgotPageHeading = driver.findElement(By.cssSelector(".uiHeaderTitle"));
+        String originlHeading = forgotPageHeading.getText();
+        String expectedHeading = "Find Your Account";
+        Assert.assertTrue("Assertion is failing because Orignal heading " + originlHeading + " is not matching with Expected Heading " + expectedHeading , originlHeading.equalsIgnoreCase(expectedHeading));
+    }
+
+    @After
+    public void tearDown() {
+        try {
+            Thread.sleep(5000); // bad practice
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+https://github.com/sdetMay22/trainingSdet
+
+27/05/2022
+package tests;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class GetAllLinkTexts {
+
+	WebDriver driver = null;
+
+	@Before
+	public void setUp() {
+		System.setProperty("webdriver.chrome.driver", "C:\\browsers\\chromedriver.exe");
+		driver = new ChromeDriver();
+
+		// Thread sleep      ------ Wait type 2
+//		driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+
+
+		// Thread sleep      ------ Wait type 3
+//		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+	}
+
+	@Test
+	public void getTextForAllLinks() {
+		driver.get("https://facebook.com");
+
+		// Thread sleep      ------ Wait type 1
+//		try {
+//			Thread.sleep(10000);
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//		}
+
+
+
+		// Thread sleep      ------ Wait type 4
+		new WebDriverWait(driver, 100).until(ExpectedConditions.numberOfElementsToBeMoreThan(By.tagName("a"), 100));
+
+		List<WebElement> allAnchorTags = driver.findElements(By.tagName("a"));
+		int listSize = allAnchorTags.size();
+
+		Assert.assertTrue("There are no anchor tags and list size is " + listSize, listSize<0);
+
+		System.out.println("List size is " + listSize);
+	}
+
+	@After
+	public void tearDown() {
+		driver.quit();
+	}
+
+
+}
+
+https://github.com/sdetMay22/trainingSdet/blob/main/SeleniumOne/src/tests/HtmlMethods.java
+
+CheckBox
+package mobileTestingProject;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class CheckBoxTest {
+	
+
+	
+WebDriver driver = null;
+
+	
+	@Before
+	public void setUp() {
+		System.setProperty("webdriver.chrome.driver", "C:\\browsers\\chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("https://91mobiles.com/phonefinder.php");
+	}
+	
+
+	@After
+	public void tearDown() {
+		
+		try {
+			Thread.sleep(5000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		driver.quit();
+	}
+
+	public void sleepNow() {
+		/*
+		 * 
+		 * Do not use sleep in your tests. It is bad practice.
+		 * We are only using it for demonstration purpose. So that we can see execution happening.
+		 * 
+		 */
+		
+		try {
+			Thread.sleep(5000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	@Test
+	public void testCheckBox() {
+		WebElement sixGBRam = driver.findElement(By.cssSelector("input[data-text='6 GB & above RAM']"));
+		WebElement mAH = driver.findElement(By.cssSelector("input[data-text='4000 mAh & above']"));
+		sixGBRam.click();
+		System.out.println("Is Checkbox selected for 6GB RAM? " + sixGBRam.isSelected());
+		System.out.println("Is Checkbox selected for mAH? " + mAH.isSelected());
+		Assert.assertTrue("Check box is not clicked ", sixGBRam.isSelected());
+	}
+	
+	
+
+}
+
+Drop Down
+package mobileTestingProject;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+
+public class DropDownTest {
+	WebDriver driver = null;
+
+	
+	@Before
+	public void setUp() {
+		System.setProperty("webdriver.chrome.driver", "C:\\browsers\\chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("https://91mobiles.com/phonefinder.php");
+	}
+	
+	@Test
+	public void dropdownTest() {
+		WebElement searchDropDown = driver.findElement(By.id("auto_suggest_category"));
+		searchDropDown.click();
+		Select select = new Select(searchDropDown);
+		System.out.println("The default selected option is " + select.getFirstSelectedOption());
+		sleepNow();
+		select.selectByVisibleText("Deals");
+		sleepNow();
+		select.selectByIndex(1);
+		sleepNow();
+		select.selectByValue("l");
+	}
+	
+	@Test
+	public void dropdownTestTwo() {
+		WebElement moreDropDown = driver.findElement(By.cssSelector(".more_arrow"));
+		moreDropDown.click();
+		
+		sleepNow();
+		
+		WebElement recentDDvalue = driver.findElement(By.xpath("//li[text()='Recent']"));
+		recentDDvalue.click();
+		
+		sleepNow();
+		
+		WebElement cameraScoreDDvalue = driver.findElement(By.xpath("//li[text()='Rear camera Score']"));
+		moreDropDown.click();
+		cameraScoreDDvalue.click();
+	}
+
+	@After
+	public void tearDown() {
+		
+		try {
+			Thread.sleep(5000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		driver.quit();
+	}
+	
+
+	public void sleepNow() {
+		/*
+		 * 
+		 * Do not use sleep in your tests. It is bad practice.
+		 * We are only using it for demonstration purpose. So that we can see execution happening.
+		 * 
+		 */
+		
+		try {
+			Thread.sleep(5000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+
+}
+
+Radio Button
+package mobileTestingProject;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class RadioButtonTest {
+	
+WebDriver driver = null;
+
+	
+	@Before
+	public void setUp() {
+		System.setProperty("webdriver.chrome.driver", "C:\\browsers\\chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("https://91mobiles.com/phonefinder.php");
+	}
+	
+
+	@After
+	public void tearDown() {
+		
+		try {
+			Thread.sleep(5000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		driver.quit();
+	}
+
+	public void sleepNow() {
+		/*
+		 * 
+		 * Do not use sleep in your tests. It is bad practice.
+		 * We are only using it for demonstration purpose. So that we can see execution happening.
+		 * 
+		 */
+		
+		try {
+			Thread.sleep(5000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	
+	@Test
+	public void radioBtnTest() {
+		WebElement radioBtnFor10krange = driver.findElement(By.xpath("//input[@id='latestandexpectprice1000001500001']"));
+		WebElement radioBtnFor15krange = driver.findElement(By.xpath("//input[@id='latestandexpectprice1500002000001']"));
+		
+		sleepNow();
+		radioBtnFor10krange.click();
+		String radioCheckedValue = radioBtnFor10krange.getAttribute("checked");
+		System.out.println("The radio button checked attr is " + radioCheckedValue);
+//		Assert.assertTrue("The radio button is not checked", radioCheckedValue.equalsIgnoreCase("true"));
+		sleepNow();
+		System.out.println("Is radio button selected for 10k range? " + radioBtnFor10krange.isSelected());
+		System.out.println("Is radio button selected for 15k range? " + radioBtnFor15krange.isSelected());
+	}
+
+}
+
+
+
+Tables
+package tables;
+
+import java.util.List;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class WebTableScrapping {
+
+	WebDriver driver = null;
+
+	@Before
+	public void setUp() {
+		System.setProperty("webdriver.chrome.driver", "C:\\browsers\\chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("https://www.timeanddate.com/worldclock/");
+	}
+
+	@After
+	public void tearDown() {
+
+		try {
+			Thread.sleep(5000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		driver.quit();
+	}
+
+	public void sleepNow() {
+		/*
+		 * 
+		 * Do not use sleep in your tests. It is bad practice. We are only using it for
+		 * demonstration purpose. So that we can see execution happening.
+		 * 
+		 */
+
+		try {
+			Thread.sleep(5000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	@Test
+	public void printCityAndTime() {
+		
+		// Total number of Rows in table
+		int totalNoRows = driver.findElements(By.xpath("//table//tbody/tr")).size();
+		
+		// print city name and time for all the rows
+		for (int i = 0; i < totalNoRows; i++) {
+			String customXPathForCity = String.format("//table//tbody/tr[%s]//a", String.valueOf(i));
+			String customXPathForTime = String.format("//table//tbody/tr[%s]//td[@class='rbi']", String.valueOf(i));
+			fetchTableData(customXPathForCity, customXPathForTime);
+		}
+		
+		
+				
+	}
+	
+	
+	public void fetchTableData(String xpathforCityName, String xPathForCityTime) {
+		
+		String expectedTableName = "Current Local Times Around the World";
+		
+		WebElement tableNameElement = driver.findElement(By.xpath("//table//h3"));
+		String actualTableName = tableNameElement.getText();
+		
+		Assert.assertTrue("Expected " + expectedTableName + " and " + "Actual " + actualTableName + " table names are not matching.", expectedTableName.equalsIgnoreCase(actualTableName));
+		
+		List<WebElement> citiesRowOne = driver.findElements(By.xpath(xpathforCityName));
+		List<WebElement> timeRowOne = driver.findElements(By.xpath(xPathForCityTime));
+
+		for (int i = 0; i < citiesRowOne.size(); i++) {
+			System.out.print(citiesRowOne.get(i).getText() + " | ");;
+			System.out.println(timeRowOne.get(i).getText());
+		}
+		
+		
+	}
+}
+
+
+
+PopUPs
+package tests;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class PopUpsTest {
+	WebDriver driver = null;
+
+	@Before
+	public void setUp() {
+		System.setProperty("webdriver.chrome.driver", "C:\\browsers\\chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("https://www.indiapost.gov.in");
+	}
+
+	@After
+	public void tearDown() {
+
+		try {
+			Thread.sleep(5000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+//		driver.quit();
+	}
+
+	public void sleepNow() {
+		/*
+		 * 
+		 * Do not use sleep in your tests. It is bad practice. We are only using it for
+		 * demonstration purpose. So that we can see execution happening.
+		 * 
+		 */
+
+		try {
+			Thread.sleep(5000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+//	@Test
+//	public void switchToHtmlPop() {
+//		String popHeading = "PLI/RPLI Update";
+//		String actualHeading = null;
+//		
+//		actualHeading = driver.findElement(By.xpath("//h3[text()=' PLI/RPLI Update ']")).getText();
+//		Assert.assertTrue("Expected heading is - -" + popHeading + "- and " + " actual heading is - -" + actualHeading, popHeading.equalsIgnoreCase(actualHeading));
+//		driver.findElement(By.xpath("//button[text()='Close']")).click();
+//	}
+	
+	@Test
+	public void switchToJSPop() {
+		driver.findElement(By.xpath("//button[text()='Close']")).click();
+		driver.findElement(By.xpath("//a/img[@alt='Buy Stamps']")).click();
+		driver.findElement(By.linkText("Buy Now")).click();
+		String alertText = driver.switchTo().alert().getText();
+		System.out.println(alertText);
+		Assert.assertTrue("Incorrect pop up", alertText.contains("redirected to an external website"));
+//		driver.switchTo().alert().accept();
+		driver.switchTo().alert().dismiss();
+	}
+}
+
+
+
+
+Windows Handel
+package tests;
+
+import java.util.List;
+import java.util.Set;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class WindowsHandlesTest {
+	
+WebDriver driver = null;
+	
+	@Before
+	public void setUp() {
+		System.setProperty("webdriver.chrome.driver", "C:\\browsers\\chromedriver.exe");
+		driver = new ChromeDriver();
+		
+	}
+	
+	@Test
+	public void windowHandleTest() {
+		driver.get(
+				"https://www.amazon.in/s?bbn=976420031&rh=n%3A976419031%2Cn%3A1375458031&dc&qid=1653646074&rnid=976420031&ref=lp_976420031_nr_n_10");
+		driver.findElement(By.xpath("(//img)[31]")).click();
+		
+		
+		
+		Set<String> amazonHandles = driver.getWindowHandles();
+		for (String handles : amazonHandles) {
+			System.out.println(handles.toString());
+		}
+//		String handle = driver.getWindowHandle();
+//		System.out.println(handle);
+		driver.quit();
+	}
+
+}
+
+
+
+
+IFrame
+package tests;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class IFrameTest {
+	WebDriver driver = null;
+
+	@Before
+	public void setUp() {
+		System.setProperty("webdriver.chrome.driver", "C:\\browsers\\chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("https://www.google.com/");
+	}
+
+	@After
+	public void tearDown() {
+
+		try {
+			Thread.sleep(5000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		driver.quit();
+	}
+
+	public void sleepNow() {
+		/*
+		 * 
+		 * Do not use sleep in your tests. It is bad practice. We are only using it for
+		 * demonstration purpose. So that we can see execution happening.
+		 * 
+		 */
+
+		try {
+			Thread.sleep(5000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	@Test
+	public void iframeTest() {
+		int iframeCounts = driver.findElements(By.xpath("//iframe")).size();
+		System.out.println("Total iframes on the page are " + iframeCounts);
+		
+		WebElement iframeEle = driver.findElement(By.xpath("//iframe"));
+		driver.switchTo().frame(iframeEle); // Switch to by WebElement
+		
+		//driver.switchTo().frame(0); // Switch to by Index
+		
+		driver.findElement(By.linkText("Sign in")).click();
+	}
+
+}
+
+
+
+HTML Methods
+package tests;
+
+import java.util.Iterator;
+import java.util.Set;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class HtmlMethods {
+
+	WebDriver driver = null;
+
+	@Before
+	public void setUp() {
+		System.setProperty("webdriver.chrome.driver", "C:\\browsers\\chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("https://facebook.com");
+	}
+
+	@Test
+	public void getCurrentURLTest() {
+		driver.findElement(By.className("_6ltj")).click(); // Click forgot password
+		String getCurrentURL = driver.getCurrentUrl();
+		System.out.println(getCurrentURL);
+		Assert.assertTrue("I am not on forgot password page", getCurrentURL.contains("recover"));
+	}
+
+	@Test
+	public void getPageSource() {
+		driver.findElement(By.className("_6ltj")).click(); // Click forgot password
+		String getPageSource = driver.getPageSource();
+		System.out.println(getPageSource);
+	}
+
+	@Test
+	public void getTitleTest() {
+		driver.findElement(By.className("_6ltj")).click(); // Click forgot password
+		String getTitle = driver.getTitle();
+		System.out.println(getTitle);
+		Assert.assertTrue("I am not on forgot password page", getTitle.contains("Forgot"));
+	}
+
+	@Test
+	public void getWindowHandleTest() {
+		driver.findElement(By.className("_6ltj")).click(); // Click forgot password
+		String windowHandle = driver.getWindowHandle();
+		System.out.println(windowHandle);
+	}
+
+	@Test
+	public void navigateToTest() {
+		driver.findElement(By.className("_6ltj")).click(); // Click forgot password
+		driver.navigate().to("https://91mobiles.com/phonefinder.php");
+	}
+
+	@Test
+	public void windowsHandlesTest() {
+		driver.get(
+				"https://www.amazon.in/s?bbn=976420031&rh=n%3A976419031%2Cn%3A1375458031&dc&qid=1653646074&rnid=976420031&ref=lp_976420031_nr_n_10");
+		driver.findElement(By.xpath("(//img)[31]")).click();
+		Set<String> amazonHandles = driver.getWindowHandles();
+		
+		System.out.println("Tabs count was " + amazonHandles.size());
+		Assert.assertTrue("The new tabs are not found", amazonHandles.size()>0);
+		
+//		for (String handles : amazonHandles) {
+//			String windowTitle = driver.switchTo().window(handles).getTitle();
+//			System.out.println(windowTitle);
+//		}
+		
+//		String newTabTitle = "TCL Tab 10 (10.1 inches WUXGA Display, 3GB+64GB, 5500mAh, Wi-Fi + 4G Calling Tablet (Black) (9060G (Black) : Amazon.in: Health & Personal Care";
+//		
+//		driver.switchTo().window(newTabTitle);
+		for (int j = 0; j < amazonHandles.toArray().length; j++) {
+			driver.switchTo().window((String) amazonHandles.toArray()[j]);
+			Assert.assertTrue("This is TCL tab product page", driver.getTitle().contains("TCL Tab"));
+			break;
+		}
+		
+		
+		
+		driver.findElement(By.id("add-to-cart-button")).click();
+	}
+
+	@After
+	public void tearDown() {
+		driver.quit();
+	}
+
+}
+
+
+
+
+
+Implicit and Explicit Functions:
+package tests;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class GetAllLinkTexts {
+	
+	WebDriver driver = null;
+	
+	@Before
+	public void setUp() {
+		System.setProperty("webdriver.chrome.driver", "C:\\browsers\\chromedriver.exe");
+		driver = new ChromeDriver();
+		
+		// Thread sleep      ------ Wait type 2
+//		driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+		
+		
+		// Thread sleep      ------ Wait type 3
+//		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+	}
+	
+	@Test
+	public void getTextForAllLinks() {
+		driver.get("https://facebook.com");
+		
+		// Thread sleep      ------ Wait type 1
+//		try {
+//			Thread.sleep(10000);
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//		}
+		
+		
+		
+		// Thread sleep      ------ Wait type 4
+		new WebDriverWait(driver, 10).until(ExpectedConditions.numberOfElementsToBeMoreThan(By.tagName("a"), 30));
+		
+		List<WebElement> allAnchorTags = driver.findElements(By.tagName("a"));
+		int listSize = allAnchorTags.size();
+		
+		Assert.assertTrue("There are no anchor tags and list size is " + listSize, listSize>0);
+		
+		
+		System.out.println("List size is " + listSize);
+		String anchorName = null;
+		for (int i = 0; i <allAnchorTags.size() ; i++) {
+			anchorName = allAnchorTags.get(i).getText();
+			
+			System.out.println(i+". " + anchorName);
+		}
+		
+//		for (WebElement webElement : allAnchorTags) {
+//			System.out.println(webElement.getText());
+//		}
+	}
+	
+	@After
+	public void tearDown() {
+		driver.quit();
+	}
+	
+
+}
+Jar Link-https://jar-download.com/artifacts/org.apache.poi/poi-ooxml
+
+EEXCEL AUTOMATION
+package excelAutomation;
+
+import java.io.IOException;
+
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class ExcelReader {
+
+	static XSSFWorkbook workbook;
+	static XSSFSheet sheet;
+
+	public ExcelReader(String filePath, String sheetName) {
+		try {
+			workbook = new XSSFWorkbook(filePath);
+			sheet = workbook.getSheet(sheetName);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static int getRowCount() {
+		return sheet.getPhysicalNumberOfRows();
+	}
+
+	public static int getColcount() {
+		return sheet.getRow(0).getPhysicalNumberOfCells();
+	}
+
+	public static double getCellDataNumericType(int rowNo, int colNo) {
+		try {
+			return sheet.getRow(rowNo).getCell(colNo).getNumericCellValue();
+		} catch (Exception e) {
+			System.out.println("There is no numeric value, so returing 0");
+			return 0;
+		}
+	}
+
+	public static String getCellDataStringType(int rowNo, int colNo) {
+		try {
+			return sheet.getRow(rowNo).getCell(colNo).toString();
+		} catch (Exception e) {
+			System.out.println("There is no string value, so returing null");
+			return null;
+		}
+	}
+
+}
+
+package excelAutomation;
+
+public class FetchData {
+
+	public static void main(String[] args) {
+		String filePath = System.getProperty("user.dir")+"\\testData\\testUserNames.xlsx";
+		ExcelReader excelReader = new ExcelReader(filePath, "Sheet1");
+		System.out.println(excelReader.getRowCount());
+		System.out.println(excelReader.getColcount());
+		System.out.println(excelReader.getCellDataNumericType(0, 0));
+
+	}
+
+}
+
+
+
+
+
+
+
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+@RunWith(Suite.class)
+@SuiteClasses({ JUnitLaunch.class })
+public class TestSuiteExecution {
+
+}
+
+
+
+
+File f;
+        FileOutputStream fos;
+        HSSFWorkbook wb;
+        HSSFSheet sh;
+        HSSFRow rw;
+        HSSFCell cl;
+        
+        f = new File("D:\\web\\Data.xls");
+        fos = new FileOutputStream(f);
+        wb = new HSSFWorkbook();
+        sh = wb.createSheet();
+        rw = sh.createRow(0);
+        cl = rw.createCell(0);
+        cl.setCellValue("R0C0");
+        wb.write(fos);
+        wb.close();
+        fos.close();
+        System.out.println("Excel Write operation is complete!");
+
+
+
+
+
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+from 1252406-KOSURI PAVAN (privately):    5:02 PM
+public class Exercise04_Enhanced_test_scripts {
+    static XSSFWorkbook workbook = null;
+    static XSSFSheet sheet = null;
+    public int getRowCount() {
+        return sheet.getPhysicalNumberOfRows();
+    }
+    public String getCellDataStringType(int rowNo, int colNo) {
+        return sheet.getRow(rowNo).getCell(colNo).toString();
+    }
+    String url = "https://www.packngo.in/";
+    WebDriver driver = null;
+    public void sleep(int n) {
+        try {
+            Thread.sleep(n);
+        } catch (Exception e) {
+            System.out.println("Cant sleep");
+        }
+    }
+
+@SuppressWarnings("deprecation")
+    @Before
+    public void setUp() {
+        System.setProperty("webdriver.chrome.driver",
+                "C:\\Users\\pavankumar.kosuri\\Downloads\\browser Drivers\\chromedriver.exe");
+        driver = new ChromeDriver();
+        driver.get(url);
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+    }
+
+@Test
+    public void test() throws IOException {
+        driver.findElement(By.xpath("//a[@data-target='#Login']")).click();
+        String filepath = "D:\\LoginOperation.xlsx";
+        workbook = new XSSFWorkbook(filepath);
+        sheet = workbook.getSheet("sheet1");
+        System.out.println(getRowCount());
+        WebElement userNameloginPage = driver
+                .findElement(By.xpath("//*[@id=\"Login\"]/div/div/div[2]/div[1]/div/form/div[1]/input[2]"));
+        WebElement passwordloginPage = driver
+                .findElement(By.xpath("//*[@id=\"Login\"]/div/div/div[2]/div[1]/div/form/div[2]/input"));
+        for (int i = 1; i <= getRowCount(); i++) {
+            userNameloginPage.click();
+            String userName = getCellDataStringType(i, 0);
+            System.out.println("username is" + userName);
+            userNameloginPage.sendKeys(userName);
+
+passwordloginPage.click();
+            String password = getCellDataStringType(i, 1);
+            System.out.println("password is " + password);
+            passwordloginPage.sendKeys(password);
+            
+            sleep(500);
+            WebElement loginBtnLoginpage = driver
+                    .findElement(By.xpath("//*[@id=\"Login\"]/div/div/div[2]/div[1]/div/form/div[3]/button"));
+            loginBtnLoginpage.click();
+            sleep(500);
+            
+            File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);// **************imp
+            FileUtils.copyFile(scrFile, new File("D:\\" + "image" + i + ".jpeg"));// ********************************imp
+            userNameloginPage.clear();
+            passwordloginPage.clear();
+        }
+    }
+
+@After
+    public void tearDown() {
+        sleep(2000);
+        driver.close();
+        driver.quit();
+    }
+}
